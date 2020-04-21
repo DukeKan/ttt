@@ -1,14 +1,13 @@
-
 buildscript {
     ext.cubaVersion = '7.1.5'
     repositories {
         maven {
             url 'https://dl.bintray.com/cuba-platform/main'
-            
+
         }
         jcenter()
 
-        
+
     }
     dependencies {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
@@ -40,16 +39,16 @@ dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
 }
 
-def hsql = 'org.hsqldb:hsqldb:2.4.1'
+def postgres = 'org.postgresql:postgresql:42.2.9'
 
 configure([globalModule, coreModule, webModule]) {
     apply(plugin: 'java')
     apply(plugin: 'maven')
     apply(plugin: 'cuba')
 
-    dependencies { 
-            testCompile('junit:junit:4.12') 
-        }
+    dependencies {
+        testCompile('junit:junit:4.12')
+    }
 
     task sourceJar(type: Jar) {
         from file('src')
@@ -58,7 +57,7 @@ configure([globalModule, coreModule, webModule]) {
 
     artifacts {
         archives sourceJar
-    } 
+    }
 }
 
 
@@ -87,8 +86,8 @@ configure(coreModule) {
     dependencies {
         compile(globalModule)
         compileOnly(servletApi)
-        jdbc(hsql)
-        testRuntime(hsql)
+        jdbc(postgres)
+        testRuntime(postgres)
     }
 
     task cleanConf(description: 'Cleans up conf directory') {
@@ -108,19 +107,19 @@ configure(coreModule) {
     }
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
-        dbms = 'hsql'
-        host = 'localhost:9010'
-        dbName = 'ttt-s7q7caqkE'
-        dbUser = 'sa'
-        dbPassword = ''
+        dbms = 'postgres'
+        host = 'localhost'
+        dbName = 'ttt'
+        dbUser = 'cuba'
+        dbPassword = 'cuba'
     }
 
     task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
-        dbms = 'hsql'
-        host = 'localhost:9010'
-        dbName = 'ttt-s7q7caqkE'
-        dbUser = 'sa'
-        dbPassword = ''
+        dbms = 'postgres'
+        host = 'localhost'
+        dbName = 'ttt'
+        dbUser = 'cuba'
+        dbPassword = 'cuba'
     }
 }
 
