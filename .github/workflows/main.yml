@@ -1,0 +1,22 @@
+on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      # To use this repository's private action, you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Building
+        run: ./gradlew clean buildUberJar
+      - name: LS
+        run: ls -R
+      - name: Upload math result for job 1
+        uses: actions/upload-artifact@v1
+        with:
+          name: artifact
+          path: build/distributions/uberJar/app.jar
+      - name: Dockerize
+        uses: ./
+        id: action
